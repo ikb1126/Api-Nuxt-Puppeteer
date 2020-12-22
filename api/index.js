@@ -1,6 +1,5 @@
 var express = require('express');
 var app = express();
-var nodemon = require('nodemon');
 
 var mysql      = require('mysql');
 var connection = mysql.createConnection({
