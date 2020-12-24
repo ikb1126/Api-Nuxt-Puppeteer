@@ -4,10 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "nuxt",
+    "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate",
-    "build": "netlify-lambda build functions/",
-    "serve": "netlify-lambda serve functions/"
+    "generate": "nuxt generate"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.12.2",
@@ -15,7 +14,6 @@
     "express": "^4.17.1",
     "mysql": "^2.18.1",
     "mysql2": "^2.2.5",
-    "netlify-lambda": "^2.0.2",
     "nuxt": "^2.14.6",
     "sequelize": "^6.3.5"
   },
