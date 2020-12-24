@@ -10,7 +10,7 @@ const connection = mysql.createConnection({
 });
 
 app.get('/', function (req, res) {
-  //res.set({ 'Access-Control-Allow-Origin': '*' });
+  res.set({ 'Access-Control-Allow-Origin': '*' });
   connection.query('select * from users', function (error, results, fields) {
     if (error) throw error;
     res.send(results[0]);
