@@ -11,9 +11,10 @@ const connection = mysql.createConnection({
 
 app.get('/', function (req, res) {
   res.set({ 'Access-Control-Allow-Origin': '*' });
-  connection.query('select * from users', function (error, results, fields) {
+  connection.query('select * from scrapings', function (error, results) {
     if (error) throw error;
-    res.send(results[0]);
+    res.send(results[0]
+);
   });
 });
 
