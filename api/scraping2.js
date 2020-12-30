@@ -18,7 +18,6 @@ const app = express();
 
   const page = await browser.newPage();
 
-
   await page.goto('https://www.farfetch.com/jp/shopping/men/sacai--item-15466999.aspx?storeid=9359');
 
   let farfetchImageUrl = "#slice-pdp > div > div._53a765 > div._d47db0 > div._158f0f > div > div._34b430._480705 > div:nth-child(1) > img";
