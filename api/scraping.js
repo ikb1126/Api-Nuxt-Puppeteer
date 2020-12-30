@@ -26,7 +26,6 @@ const connection = mysql.createConnection({
 
   const page = await browser.newPage();
 
-
   await page.goto('https://www.farfetch.com/jp/shopping/men/sacai--item-15466999.aspx?storeid=9359');
 
   let farfetchBrandName = "#bannerComponents-Container > h1 > span._0ab287 > a > span";
@@ -67,7 +66,6 @@ const connection = mysql.createConnection({
       if(err) throw err;
       console.log("1 recoad inserted");
   });
-
 
   console.log(brandName);
   console.log(itemName);
