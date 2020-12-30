@@ -21,11 +21,16 @@ const app = express();
 
   await page.goto('https://www.farfetch.com/jp/shopping/men/sacai--item-15466999.aspx?storeid=9359');
 
+  let farfetchImageUrl = "#slice-pdp > div > div._53a765 > div._d47db0 > div._158f0f > div > div._34b430._480705 > div:nth-child(1) > img";
   let farfetchBrandName = "#bannerComponents-Container > h1 > span._0ab287 > a > span";
   let farfetchItemName = "#bannerComponents-Container > h1 > span._d85b45._3c73f1._d85b45";
   let farfetchItemPrice = "#slice-pdp > div > div._53a765 > div._d47db0 > div._3eed2e > div._7dad7e > div > span";
   let farfetchItemMaterial = "#panelInner-0 > div > div:nth-child(2) > div > div:nth-child(1) > p";
   let farfetchItemBrandStyleId = "#panelInner-0 > div > div:nth-child(2) > div > div:nth-child(3) > p > span";
+
+  const imageUrl = await page.$eval(farfetchImageUrl, item => {
+    return item.textContent;
+  });
 
   const brandName = await page.$eval(farfetchBrandName, item => {
     return item.textContent;
@@ -49,6 +54,7 @@ const app = express();
 
   await browser.close();
 
+  console.log(imageUrl);
   console.log(brandName);
   console.log(itemName);
   console.log(price);
@@ -58,6 +64,7 @@ const app = express();
   app.get('/api', (req, res) => {
     res.set({ 'Access-Control-Allow-Origin': '*' });
     Scraping.create({
+      imageUrl:  `${imageUrl}`,
       brandName: `${brandName}`,
       itemName: `${itemName}`,
       price: `${price}`,
@@ -82,6 +89,10 @@ const sequelize = new Sequelize('database_development', 'root', 'kumakuma', {
 
 class Scraping extends Model {}
 Scraping.init({
+  imageUrl: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
   brandName: {
     type: DataTypes.STRING,
     allowNull: false
@@ -108,10 +119,6 @@ Scraping.init({
 });
 
 console.log(Scraping === sequelize.models.Scraping);
-
-//app.get('/api', (req, res) => {
-  //Scraping.findByPk(31).then(scrapings => res.json(scrapings))
-//})
 
 app.listen(5000, function () {
   console.log('Example app listening on port 5000!');
