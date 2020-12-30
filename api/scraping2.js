@@ -54,6 +54,24 @@ const app = express();
   console.log(price);
   console.log(material);
   console.log(brandStyleId);
+
+  app.get('/api', (req, res) => {
+    res.set({ 'Access-Control-Allow-Origin': '*' });
+    Scraping.create({
+      brandName: `${brandName}`,
+      itemName: `${itemName}`,
+      price: `${price}`,
+      material: `${material}`,
+      brandStyleId: `${brandStyleId}`
+    }).then(result => {
+      console.log('created:', result.brandName);
+    });
+    Scraping.findOne({
+      order: [
+        ['id', 'DESC']
+      ]
+    }).then(scrapings => res.json(scrapings))
+  });
 })();
 
 const { Sequelize, DataTypes, Model } = require('sequelize');
@@ -67,6 +85,22 @@ Scraping.init({
   brandName: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  itemName: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  price: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  material: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  brandStyleId: {
+    type: DataTypes.STRING,
+    allowNull: false
   }
 }, {
   sequelize,
@@ -78,14 +112,6 @@ console.log(Scraping === sequelize.models.Scraping);
 //app.get('/api', (req, res) => {
   //Scraping.findByPk(31).then(scrapings => res.json(scrapings))
 //})
-
-app.get('/api', (req, res) => {
-  Scraping.findAll({
-    order: [
-      ['id', 'DESC']
-    ]
-  }).then(scrapings => res.json(scrapings))
-});
 
 app.listen(5000, function () {
   console.log('Example app listening on port 5000!');
