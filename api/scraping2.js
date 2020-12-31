@@ -27,7 +27,8 @@ const app = express();
   let farfetchItemMaterial = "#panelInner-0 > div > div:nth-child(2) > div > div:nth-child(1) > p";
   let farfetchItemBrandStyleId = "#panelInner-0 > div > div:nth-child(2) > div > div:nth-child(3) > p > span";
 
-  const imageUrl = await page.$eval(farfetchImageUrl, item => {
+  const imageUrl = await page.evaluate(() => {
+    return document.querySelector('#slice-pdp > div > div._53a765 > div._d47db0 > div._158f0f > div > div._34b430._480705 > div:nth-child(1) > img').src;
     return item.textContent;
   });
 
