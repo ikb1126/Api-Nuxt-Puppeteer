@@ -6,8 +6,6 @@ const browserFetcher = puppeteer.createBrowserFetcher();
 const express = require('express');
 const app = express();
 
-const router = express.Router();
-
 //--Puppeteer起動--//
 (async () => {
   const revisionInfo = await browserFetcher.download('809590.');
@@ -20,42 +18,50 @@ const router = express.Router();
     slowMo: 50,
     executablePath: revisionInfo.executablePath
   });
-
 //--新規ページをクロームで開く------//
   const page = await browser.newPage();
 
 //--FarfetchのSACAIのTOPページを開く------//
   await page.goto('https://www.farfetch.com/jp/shopping/men/sacai/items.aspx');
 
-//商品名、ブランド名、価格を取得------//
-  let contents = "#slice-container > div:nth-child(3) > div > div._0f346c > div > div._0ab668 > ul";
+//☆商品名を全て取得☆-----------------------------//
 
-  const contentsAll = await page.$eval(contents, item => {
-    return item.textContent;
-  });
+  let itemNameSelectors = 'p._d85b45';
 
-  //取得した情報をコンソール上に表示------//
-  for ( let item of contentsAll ) {
+  //const imageUrl = await page.evaluate(() => {
+    //return document.querySelector('#slice-container > div:nth-child(3) > div > div._0f346c > div > div._0ab668 > ul > li:nth-child(1) > a > div._9c4bad._976d71 > img').src;
+    //return item.textContent;
+  //});
+
+  const itemAll = await page.evaluate(( selector ) => {
+    const itemAll = Array.from(document.querySelectorAll( selector ))
+    return itemAll.map( v => v.textContent )
+  } ,itemNameSelectors );
+
+  for ( let item of itemAll ) {
     console.log( item )
   };
 
+  //console.log( itemAll);
+
+  //--------------------------------------//
 
   //--ブラウザを閉じる------------------------//
   await browser.close();
 
-  //--ルーティング(localhost:6000)------------//
+  //Sequelize--ルーティング(localhost:6000)------------//
   app.get('/api', (req, res) => {
     res.set({ 'Access-Control-Allow-Origin': '*' });
-    Sacai.create({
+    Sacais.create({
       itemAll: `${itemAll}`
     }).then(result => {
       console.log('created:', result.itemAll);
     });
-    Sacai.findAll({
+    Sacais.findAll({
       order: [
         ['itemAll', 'DESC']
       ]
-    }).then(sacai => res.json(sacai))
+    }).then(sacais => res.json(sacais))
   });
 })();
 
@@ -63,20 +69,24 @@ const router = express.Router();
 const { Sequelize, DataTypes, Model } = require('sequelize');
 const sequelize = new Sequelize('database_development', 'root', 'kumakuma', {
   host: 'localhost',
-  dialect: 'mysql'
+  dialect: 'mysql',
+  define: {
+      timestamps: false
+  }
 });
 
-class Sacai extends Model {}
-Sacai.init({
+class Sacais extends Model {}
+Sacais.init({
   itemAll: {
-    type: DataTypes.STRING,
-    allowNull: false
+    type: DataTypes.STRING
   }
 }, {
   sequelize,
-  modelName: 'Sacai'
+  modelName: 'Sacais'
 });
 
-app.listen(6000, function () {
-  console.log('Example app listening on port 6000!');
+//console.log(Scraping === sequelize.models.Scraping);
+
+app.listen(5000, function () {
+  console.log('Example app listening on port 5000!');
 });

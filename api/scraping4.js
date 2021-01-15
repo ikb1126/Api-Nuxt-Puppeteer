@@ -2,9 +2,12 @@
 const puppeteer = require('puppeteer');
 const browserFetcher = puppeteer.createBrowserFetcher();
 
+
 //--Expressを利用--//
 const express = require('express');
-const app = express();
+//const app = express();
+const router = express.Router();
+
 
 //--Puppeteer起動--//
 (async () => {
@@ -30,7 +33,7 @@ const app = express();
 
   let farfetchItemName = "#slice-container > div:nth-child(3) > div > div._0f346c > div > div._0ab668 > ul > li:nth-child(1) > a > div._bab25b._18fbc8 > p";
 
-  let farfetchItemPrice = "#slice-container > div:nth-child(3) > div > div._0f346c > div > div._0ab668 > ul > li:nth-child(1) > a > div._bab25b._18fbc8 > div > span._5cf853";
+  let farfetchItemPrice = "#slice-container > div:nth-child(3) > div > div._0f346c > div > div._0ab668 > ul > li:nth-child(1) > a > div._bab25b._18fbc8 > div > span";
 
   const imageUrl = await page.evaluate(() => {
     return document.querySelector('#slice-container > div:nth-child(3) > div > div._0f346c > div > div._0ab668 > ul > li:nth-child(1) > a > div._9c4bad._976d71 > img').src;
@@ -55,7 +58,7 @@ const app = express();
   await browser.close();
 
   //--ルーティング(localhost:6000)------------//
-  app.get('/api', (req, res) => {
+  router.get('/api', (req, res) => {
     res.set({ 'Access-Control-Allow-Origin': '*' });
     Scraping.create({
       imageUrl: `${imageUrl}`,
@@ -101,6 +104,8 @@ Scraping.init({
 
 //console.log(Scraping === sequelize.models.Scraping);
 
-app.listen(5000, function () {
-  console.log('Example app listening on port 5000!');
-});
+//router.listen(5000, function () {
+  //console.log('Example router listening on port 5000!');
+//});
+
+module.exports = router
