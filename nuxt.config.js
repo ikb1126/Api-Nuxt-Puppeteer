@@ -1,9 +1,12 @@
 import colors from 'vuetify/es5/util/colors'
+require('dotenv').config();
 
 export default {
   // Disable server-side rendering (https://go.nuxtjs.dev/ssr-mode)
   ssr: false,
-
+  env: {
+    API
+  },
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     titleTemplate: '%s - Api-Nuxt-Puppeteer',
