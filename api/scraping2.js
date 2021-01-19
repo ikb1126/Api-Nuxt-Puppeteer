@@ -82,7 +82,7 @@ const app = express();
 })();
 
 const { Sequelize, DataTypes, Model } = require('sequelize');
-const sequelize = new Sequelize(process.env.DATABASE, process.env.USERNAME, process.env.MYSQL_PASSWORD, {
+const sequelize = new Sequelize(`${process.env.DATABASE}`, `${process.env.USER_NAME}`, `${process.env.MYSQL_PASSWORD}`, {
   host: 'localhost',
   dialect: 'mysql',
 });
