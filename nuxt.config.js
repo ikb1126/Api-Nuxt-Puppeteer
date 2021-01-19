@@ -1,11 +1,14 @@
 import colors from 'vuetify/es5/util/colors'
+
+//dotenvで管理//
 require('dotenv').config();
+const { DATABASE, MYSQL_PASSWORD, USERNAME } = process.env;
 
 export default {
   // Disable server-side rendering (https://go.nuxtjs.dev/ssr-mode)
   ssr: false,
   env: {
-    API
+    DATABASE, MYSQL_PASSWORD, USERNAME
   },
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
