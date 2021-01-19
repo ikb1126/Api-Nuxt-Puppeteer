@@ -82,9 +82,9 @@ const app = express();
 })();
 
 const { Sequelize, DataTypes, Model } = require('sequelize');
-const sequelize = new Sequelize('database_development', 'root', 'kumakuma', {
+const sequelize = new Sequelize(process.env.DATABASE, process.env.USERNAME, process.env.MYSQL_PASSWORD, {
   host: 'localhost',
-  dialect: 'mysql'
+  dialect: 'mysql',
 });
 
 class Scraping extends Model {}
