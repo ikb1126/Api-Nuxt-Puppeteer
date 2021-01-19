@@ -2,14 +2,20 @@ import colors from 'vuetify/es5/util/colors'
 
 //dotenvで管理//
 require('dotenv').config();
-const { DATABASE, MYSQL_PASSWORD, USERNAME } = process.env;
+
+const { DATABASE, MYSQL_PASSWORD, USER_NAME } = process.env;
 
 export default {
   // Disable server-side rendering (https://go.nuxtjs.dev/ssr-mode)
   ssr: false,
+
+  // dotenv
   env: {
-    DATABASE, MYSQL_PASSWORD, USERNAME
+    DATABASE,
+    MYSQL_PASSWORD,
+    USER_NAME
   },
+
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     titleTemplate: '%s - Api-Nuxt-Puppeteer',
@@ -39,14 +45,15 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
-    '@nuxtjs/dotenv'
+    //'@nuxtjs/dotenv'
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/proxy'
+    '@nuxtjs/proxy',
+    '@nuxtjs/dotenv'
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
