@@ -63,7 +63,7 @@ let url = 'https://www.ssense.com/ja-jp/men/designers/maison-margiela';
 
 //--Sequelizeによるデータベース操作-----------//
 const { Sequelize, DataTypes, Model } = require('sequelize');
-const sequelize = new Sequelize(sprocess.env.DATABASE, process.env.USERNAME, process.env.MYSQL_PASSWORD, {
+const sequelize = new Sequelize(process.env.DATABASE, process.env.USERNAME, process.env.MYSQL_PASSWORD, {
   host: 'localhost',
   dialect: 'mysql',
   define: {
