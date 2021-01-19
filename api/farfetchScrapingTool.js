@@ -6,6 +6,8 @@ const browserFetcher = puppeteer.createBrowserFetcher();
 const express = require('express');
 const app = express();
 
+const db = require('../models/index');
+
 //--Puppeteer起動--//
 (async () => {
   const revisionInfo = await browserFetcher.download('809590.');
@@ -28,11 +30,6 @@ const app = express();
 
   let itemNameSelectors = 'p._d85b45';
 
-  //const imageUrl = await page.evaluate(() => {
-    //return document.querySelector('#slice-container > div:nth-child(3) > div > div._0f346c > div > div._0ab668 > ul > li:nth-child(1) > a > div._9c4bad._976d71 > img').src;
-    //return item.textContent;
-  //});
-
   const itemAll = await page.evaluate(( selector ) => {
     const itemAll = Array.from(document.querySelectorAll( selector ))
     return itemAll.map( v => v.textContent )
@@ -42,24 +39,21 @@ const app = express();
     console.log( item )
   };
 
-  //console.log( itemAll);
-
-  //--------------------------------------//
-
   //--ブラウザを閉じる------------------------//
   await browser.close();
 
   //Sequelize--ルーティング(localhost:6000)------------//
   app.get('/api', (req, res) => {
     res.set({ 'Access-Control-Allow-Origin': '*' });
-    Sacais.create({
+    Sacais.bulkCreate({
+      id: `${id}`,
       itemAll: `${itemAll}`
     }).then(result => {
       console.log('created:', result.itemAll);
     });
     Sacais.findAll({
       order: [
-        ['itemAll', 'DESC']
+        ['id', 'DESC']
       ]
     }).then(sacais => res.json(sacais))
   });
