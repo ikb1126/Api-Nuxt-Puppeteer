@@ -46,7 +46,6 @@ const db = require('../models/index');
   app.get('/api', (req, res) => {
     res.set({ 'Access-Control-Allow-Origin': '*' });
     Sacais.bulkCreate({
-      id: `${id}`,
       itemAll: `${itemAll}`
     }).then(result => {
       console.log('created:', result.itemAll);

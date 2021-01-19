@@ -27,11 +27,7 @@ let url = 'https://www.ssense.com/ja-jp/men/designers/maison-margiela';
   await page.goto(url);
 
 //☆ html全て取得☆-----------------------------//
-  let html = await page.$eval('html', item => {
-      return item.innerHTML;
-  });
-
-  let itemNameSelectors = await html.match();
+  let itemNameSelectors = '#wrap > div > div.s-column.plp-products-column__wrapper > div.plp-products__row > div:nth-child(1) > div > div > a > div > div:nth-child(2) > span';
 
   const itemAll = await page.evaluate(( selector ) => {
     const itemAll = Array.from(document.querySelectorAll( selector ))
@@ -63,7 +59,7 @@ let url = 'https://www.ssense.com/ja-jp/men/designers/maison-margiela';
 
 //--Sequelizeによるデータベース操作-----------//
 const { Sequelize, DataTypes, Model } = require('sequelize');
-const sequelize = new Sequelize(process.env.DATABASE, process.env.USERNAME, process.env.MYSQL_PASSWORD, {
+const sequelize = new Sequelize('database_development', 'root', 'kumakuma', {
   host: 'localhost',
   dialect: 'mysql',
   define: {
